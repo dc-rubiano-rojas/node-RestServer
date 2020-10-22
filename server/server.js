@@ -2,16 +2,18 @@ require('./config/config');
 
 const express = require('express')
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 const app = express()
 
-const bodyParser = require('body-parser')
+// Middlewares
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
 // Rutas
-app.use(require('./routes/usario.routes'));
+app.use(require('./routes/index'));
+
 
 
 mongoose.connect(process.env.URLDB, {

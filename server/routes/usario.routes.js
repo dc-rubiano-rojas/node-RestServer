@@ -3,11 +3,12 @@ const bcrypt = require('bcrypt');
 const _ = require('underscore');
 
 const Usuario = require('../models/usuarios.model');
+const { verificaToken, verificaAdmin_Role } = require('../middlewares/autenticacion');
 
 const app = express()
 
 
-app.get('/usuario', function(req, res) {
+app.get('/usuario', verificaToken, (req, res) => {
 
     // El desde va a ser un parametro que le estamos pasando
     // y si no recibe nada que muestra la primera pagina (0)
@@ -33,7 +34,7 @@ app.get('/usuario', function(req, res) {
 
             // Asi podemos contar registro
             // la condicion {} debe ser la misma que pasamos en el find()
-            Usuario.count({ estado: true }, (error, conteo) => {
+            Usuario.countDocuments({ estado: true }, (error, conteo) => {
                 res.json({
                     ok: true,
                     usuarios,
@@ -46,7 +47,7 @@ app.get('/usuario', function(req, res) {
 
 
 
-app.post('/usuario', function(req, res) {
+app.post('/usuario', [verificaToken, verificaAdmin_Role], (req, res) => {
 
     const body = req.body;
 
@@ -57,12 +58,10 @@ app.post('/usuario', function(req, res) {
         role: body.role
     });
 
-
     usario.save((error, usuarioDB) => {
-
         // Uso el return para que si entra en el error no siga y no tener que poner el else
         if (error) {
-            return res.status(400).json({
+            return res.status(500).json({
                 ok: false,
                 error
             });
@@ -77,7 +76,7 @@ app.post('/usuario', function(req, res) {
 
 
 
-app.put('/usuario/:id', function(req, res) {
+app.put('/usuario/:id', [verificaToken, verificaAdmin_Role], (req, res) => {
 
     let id = req.params.id;
     // Con el pick de underscore (_) me permite seleccionar las propiedades que quiere tomar
@@ -89,7 +88,7 @@ app.put('/usuario/:id', function(req, res) {
     Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (error, usuarioDB) => {
 
         if (error) {
-            return res.status(400).json({
+            return res.status(500).json({
                 ok: false,
                 error
             });
@@ -106,7 +105,7 @@ app.put('/usuario/:id', function(req, res) {
 
 
 
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/usuario/:id', [verificaToken, verificaAdmin_Role], (req, res) => {
 
     let id = req.params.id;
 
@@ -119,7 +118,7 @@ app.delete('/usuario/:id', function(req, res) {
     Usuario.findByIdAndUpdate(id, cambiaEstado, { new: true }, (error, usuarioBorrado) => {
 
         if (error) {
-            return res.status(400).json({
+            return res.status(500).json({
                 ok: false,
                 error
             });
@@ -138,11 +137,7 @@ app.delete('/usuario/:id', function(req, res) {
             ok: true,
             usuario: usuarioBorrado
         })
-
-
     })
-
-
 });
 
 

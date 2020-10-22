@@ -32,10 +32,10 @@ usuarioSchema.methods.toJSON = function() {
     return userObject;
 }
 
-
 // El path me muestra me muestra en este caso el 'email' que es como esta nombrado en el modelo
 // plugin me esta leyendo el unique: true del email
 usuarioSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
+
 
 
 module.exports = mongoose.model('Usuario', usuarioSchema);
