@@ -45,8 +45,7 @@ if (process.env.NODE_ENV === 'dev') {
     urlDB = process.env.MONGO_URI;
 }
 
-// Se creo esta variable desde el CLI con
-// heroku config:set MONGO_URI="mongodb+srv://dancrr01:mQxN6W2Mr2oBgjOJ@cluster0.rptmd.mongodb.net/cafe"
+// Se creo esta variable desde el CLI con heroku config:set MONGO_URI=""
 // Esto para ocultar el url de mi app al momento de subir a github
 process.env.URLDB = urlDB;
 
