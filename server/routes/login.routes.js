@@ -83,24 +83,25 @@ app.post('/google', async(req, res) => {
 
     let token = req.body.idtoken;
 
-    try {
-        googleUser = await verify(token);
-    } catch (err) {
-        return res.status(403).json({
-            ok: false,
-            err: {
-                message: 'Token is not valid'
-            }
-        })
-    }
+    // try {
+    //     googleUser = await verify(token);
+    // } catch (err) {
+    //     return res.status(403).json({
+    //         ok: false,
+    //         err: {
+    //             message: 'Token is not valid'
+    //         }
+    //     })
+    // }
 
-    // let googleUser = await verify(token)
-    //     .catch(e => {
-    //         return res.status(403).json({
-    //             ok: false,
-    //             err: e
-    //         });
-    //     });
+    let googleUser = await verify(token)
+        .catch(e => {
+            return res.status(403).json({
+                ok: false,
+                err: e
+            });
+        });
+
 
     Usuario.findOne({ email: googleUser.email }, (err, usuarioDB) => {
 
