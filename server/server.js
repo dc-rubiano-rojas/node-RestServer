@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Habilitar la carpeta public
 // El path ayuda a que el path se arme correctamente
-app.use(express.static(path.resolve(__dirname, '../public')));
+// app.use(express.static(path.resolve(__dirname, '../public')));
 
 
 
