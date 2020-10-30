@@ -111,7 +111,6 @@ app.post('/google', async(req, res) => {
             });
         }
 
-
         if (usuarioDB) {
             if (usuarioDB.google === false) {
                 return res.status(400).json({
